@@ -105,7 +105,7 @@ def clear_data(table, where):
     return count
 
 
-def row_dict_from_table(table, where=u''):
+def row_dict_from_table(table, where=None):
     """
     Given a table name, return a dictionary to represent fields and their
     values.
@@ -113,6 +113,9 @@ def row_dict_from_table(table, where=u''):
     :param table: table name string
     :param where: where clause string
     """
+    if where is None:
+        where = u''
+
     assert isinstance(table, (unicode, str))
     assert isinstance(where, (unicode, str))
 
@@ -145,7 +148,7 @@ def get_column_as_list(table, desired_col, where=None):
     return [row[0] for row in get_rows(table, [desired_col], where)]
 
 
-def copy_data(source_table, target_table, where=None, fields='*'):
+def copy_data(source_table, target_table, where=None, fields=None):
     """
     Copies field values from the source to the target table, matching the where
     clause.
@@ -156,6 +159,9 @@ def copy_data(source_table, target_table, where=None, fields='*'):
     :return: count of inserted records
     :rtype int
     """
+    if fields is None:
+        fields = '*'
+
     ins_count = 0
     for row in get_rows(source_table, fields, where):
         insert_row(target_table, fields, row)
